@@ -1,1 +1,739 @@
+    function untitled3
+    % Create UI with Sidebar
+    fig = uifigure('Name','Numerical Method','Position',[100 100 800 500]);
+    
+    % Sidebar panel (wider for bigger dropdown)
+    sidebar = uipanel(fig, 'Title', 'Methods', 'Position', [1 1 240 500]);
+
+    % Use a grid layout inside the sidebar for automatic spacing
+    sidebarGrid = uigridlayout(sidebar, [5, 1], ...
+        'RowHeight', {40, 50, 40, 40, '1x'}, ... % label, dropdown, instructions, reset, filler
+        'ColumnWidth', {'1x'}, ...
+        'Padding', [10 10 10 10]);
+
+    % Add label
+    uilabel(sidebarGrid, 'Text', 'Select Method:', 'FontSize', 18, 'HorizontalAlignment', 'left');
+
+    % Add dropdown
+    methodNames = {'Graphical','Bisection','Secant','Newton-Raphson','Regula Falsi','Incremental'};
+    methodDropdown = uidropdown(sidebarGrid, ...
+        'Items', methodNames, ...
+        'FontSize', 18, ...
+        'Value', methodNames{1}, ...
+        'ValueChangedFcn', @(src, event)selectMethod(src.Value));
+    methodDropdown.FontWeight = 'bold';
+
+    % Add Instructions button
+    instructionsBtn = uibutton(sidebarGrid, ...
+        'Text', 'Instructions', ...
+        'FontSize', 16);
+    instructionsBtn.BackgroundColor = [1 0.5 0]; % Orange
+    instructionsBtn.FontColor = [0 0 0];         % Black
+    instructionsBtn.FontWeight = 'bold';            % Bold
+    instructionsBtn.ButtonPushedFcn = @(src, event)buttonFlash(src, @()showInstructions());
+
+    % Add Reset button
+    resetBtn = uibutton(sidebarGrid, ...
+        'Text', 'Reset', ...
+        'FontSize', 16);
+    resetBtn.BackgroundColor = [1 0 0]; % Red
+    resetBtn.FontColor = [0 0 0];        % Black
+    resetBtn.FontWeight = 'bold';         % Bold
+    resetBtn.ButtonPushedFcn = @(src, event)buttonFlash(src, @()resetApp());
+
+    % Add Show Variables button
+    showVarsBtn = uibutton(sidebarGrid, ...
+        'Text', 'Show Variables', ...
+        'FontSize', 16, ...
+        'ButtonPushedFcn', @(src, event)showVariables());
+
+    % Add Save Session button
+    saveSessionBtn = uibutton(sidebarGrid, ...
+        'Text', 'Save Session', ...
+        'FontSize', 16, ...
+        'ButtonPushedFcn', @(src, event)toggleDiary());
+
+    % Add Plot Example button
+    plotExampleBtn = uibutton(sidebarGrid, ...
+        'Text', 'Plot Example', ...
+        'FontSize', 16, ...
+        'ButtonPushedFcn', @(src, event)plotExample());
+
+    % Main area UI elements (shifted right, bigger)
+    eqEdit = uieditfield(fig, 'text', ...
+        'Position', [270 450 440 44], ...   % much wider and taller, shifted right
+        'FontSize', 20, ...
+        'Value', 'x^3-x-2');
+    
+    % Lower limit input
+    lowerEdit = uieditfield(fig, 'numeric', ...
+        'Position', [270 400 130 36], ...
+        'FontSize', 16, ...
+        'Value', 0.1, ...
+        'Limits', [-Inf Inf], ...
+        'LowerLimitInclusive', 'on', ...
+        'UpperLimitInclusive', 'on', ...
+        'Placeholder', 'Lower Limit');
+
+    % Upper limit input
+    upperEdit = uieditfield(fig, 'numeric', ...
+        'Position', [420 400 130 36], ...
+        'FontSize', 16, ...
+        'Value', 10, ...
+        'Limits', [-Inf Inf], ...
+        'LowerLimitInclusive', 'on', ...
+        'UpperLimitInclusive', 'on', ...
+        'Placeholder', 'Upper Limit');
+
+    % Step size input
+    stepEdit = uieditfield(fig, 'numeric', ...
+        'Position', [570 400 140 36], ...
+        'FontSize', 16, ...
+        'Value', 0.01, ...
+        'Limits', [eps Inf], ...
+        'LowerLimitInclusive', 'on', ...
+        'UpperLimitInclusive', 'on', ...
+        'Placeholder', 'Step Size');
+
+    runBtn = uibutton(fig, 'Text', 'Run', ...
+        'Position', [730 450 100 44], ...   % bigger button, shifted right
+        'FontSize', 20, ...
+        'ButtonPushedFcn', @(src, event)runMethod());
+    ax = uiaxes(fig,'Position',[270 200 600 220]);
+    resultLbl = uilabel(fig,'Text','Result: ','Position',[270 170 600 30],'FontSize',16);
+    table = uitable(fig, ...
+        'Position', [270 10 600 180], ...   % x, y, width, height
+        'ColumnName', {}, ...
+        'Data', {});
+
+    % Default interval and settings
+    tol = 1e-10; max_iter = 200;
+    x = sym('x'); % <-- Define symbolic variable here
+    method = 'Graphical'; % Default method
+
+    % Remove dropdown, add sidebar logic
+    function selectMethod(selectedMethod)
+        method = selectedMethod;
+        runMethod();
+    end
+
+    function runMethod()
+        a = lowerEdit.Value;
+        b = upperEdit.Value;
+        stepsize = stepEdit.Value;
+        eq = preprocess_equation(eqEdit.Value);
+        % Check for unsupported patterns and provide user guidance
+        if contains(eq, 'foo(') || contains(eq, 'bar(')
+            uialert(fig, 'Custom functions like foo(x) or bar(x) are not defined. Please define them first or use built-in functions.', 'Unsupported Function');
+            return;
+        end
+        % (REMOVE the block that checks for '=' here)
+        if contains(eq, '{n+1}') || contains(eq, 'recurrence')
+            uialert(fig, 'Recurrence relations are not directly supported. Please use loops or the symbolic toolbox (rsolve) for such equations.', 'Recurrence Relation');
+            return;
+        end
+        if contains(eq, '\\')
+            uialert(fig, 'LaTeX detected. Only basic LaTeX constructs (fractions, sqrt, powers, subscripts) are supported. Please check your input.', 'LaTeX Input');
+            return;
+        end
+        if contains(eq, 'piecewise')
+            uialert(fig, 'Piecewise detected. Use the format piecewise(cond1, expr1, cond2, expr2, ...) for best results.', 'Piecewise Input');
+            % Not a hard error, just a warning
+        end
+        if contains(eq, 'symsum') || contains(eq, 'symprod')
+            uialert(fig, 'Summation/Product detected. Only simple forms are supported. For advanced cases, use the symbolic toolbox directly.', 'Summation/Product Input');
+            % Not a hard error, just a warning
+        end
+        if contains(eq, 'dirac') || contains(eq, 'heaviside')
+            uialert(fig, 'Dirac/Heaviside detected. These are only supported symbolically, not numerically.', 'Dirac/Heaviside Input');
+            % Not a hard error, just a warning
+        end
+        try
+            f = matlabFunction(str2sym(eq),'Vars',x);
+        catch err
+            resultLbl.Text = ['Invalid equation! ', err.message];
+            cla(ax);
+            return;
+        end
+        xvals = linspace(a,b,5000); % Higher resolution for accuracy
+        yvals = arrayfun(f,xvals);
+        % Filter out complex or NaN values for plotting and root finding
+        validIdx = isreal(yvals) & ~isnan(yvals);
+        xvals_plot = xvals(validIdx);
+        yvals_plot = yvals(validIdx);
+        cla(ax);
+        % Set dark background and axes
+        ax.Color = [0.1 0.1 0.1];
+        ax.XColor = [1 1 1];
+        ax.YColor = [1 1 1];
+        ax.XLabel.Color = [1 1 1];
+        ax.YLabel.Color = [1 1 1];
+        ax.Title.Color = [1 1 1];
+        % Set grid and minor grid
+        grid(ax,'on');
+        ax.XMinorGrid = 'on';
+        ax.YMinorGrid = 'on';
+        ax.GridColor = [1 1 1];
+        ax.MinorGridColor = [0.5 0.5 0.5];
+        ax.GridAlpha = 0.3;
+        ax.MinorGridAlpha = 0.2;
+        % Set axis limits tightly with margin
+        if isempty(yvals_plot)
+            ax.XLim = [a, b];
+            ax.YLim = [-1, 1];
+        else
+            ypad = 0.05 * (max(yvals_plot)-min(yvals_plot));
+            if ypad == 0, ypad = 1; end
+            ax.XLim = [min(xvals_plot), max(xvals_plot)];
+            ax.YLim = [min(yvals_plot)-ypad, max(yvals_plot)+ypad];
+        end
+        % Set tick marks for alignment
+        ax.XTick = linspace(a, b, 11);
+        if ~isempty(yvals_plot)
+            ax.YTick = linspace(round(min(yvals_plot)), round(max(yvals_plot)), 9);
+        end
+        % Plot function in white
+        if ~isempty(xvals_plot)
+            plot(ax,xvals_plot,yvals_plot,'w','LineWidth',2,'DisplayName','f(x)'); hold(ax,'on');
+        end
+        % Plot y=0 line in green dashed
+        yline(ax,0,'--','Color',[0 1 0],'LineWidth',2,'DisplayName','y=0');
+        switch method
+            case 'Graphical'
+                zero_crossings = find(yvals(1:end-1).*yvals(2:end) < 0);
+                roots_approx = (xvals(zero_crossings) + xvals(zero_crossings+1))/2;
+                table.ColumnName = {'Approximate Root(s)'};
+                table.Data = num2cell(roots_approx');
+                if isempty(roots_approx)
+                    resultLbl.Text = 'No root detected visually in interval.';
+                else
+                    resultLbl.Text = sprintf('Approximate root(s): %s', ...
+                        num2str(roots_approx, '%.10f '));
+                    scatter(ax,roots_approx,zeros(size(roots_approx)),100,'g','filled','DisplayName','Approx Root');
+                end
+                lgd = legend(ax,'show','Location','best');
+                lgd.FontSize = 18;
+                its = {}; root = NaN;
+            case 'Bisection'
+                [root, its] = bisection_method(f,a,b,tol,max_iter);
+                table.ColumnName = {'Iteration', 'a', '\u0394x', 'b', 'f(a)', 'f(b)', 'f(a)*f(b)', 'Remark'};
+                if ~isempty(its)
+                    for k = 1:size(its,1)
+                        x1 = its{k,2}; xu = its{k,4};
+                        if k == 1
+                            plot(ax, [x1 xu], [0 0], 'bo-', 'LineWidth', 1.5, 'DisplayName', 'Interval');
+                        else
+                            plot(ax, [x1 xu], [0 0], 'bo-', 'LineWidth', 1.5, 'HandleVisibility','off');
+                        end
+                    end
+                end
+                scatter(ax,root,f(root),100,'r','filled','DisplayName','Root');
+                lgd = legend(ax,'show','Location','best');
+                lgd.FontSize = 18;
+            case 'Secant'
+                [root, its] = secant_method(f,a,b,tol,max_iter);
+                table.ColumnName = {'Iteration', 'x0', 'x1', 'f(x0)', 'f(x1)', 'x2', 'Remark'};
+                if ~isempty(its)
+                    x0s = cell2mat(its(:,2));
+                    x1s = cell2mat(its(:,3));
+                    if ~isempty(x0s)
+                        scatter(ax, x0s, f(x0s), 60, 'b', 'filled', 'DisplayName', 'x0');
+                    end
+                    if ~isempty(x1s)
+                        scatter(ax, x1s, f(x1s), 60, 'g', 'filled', 'DisplayName', 'x1');
+                    end
+                    for k = 1:size(its,1)
+                        x0_sec = its{k,2}; x1_sec = its{k,3};
+                        f0_sec = its{k,4}; f1_sec = its{k,5};
+                        if k == 1
+                            plot(ax, [x0_sec x1_sec], [f0_sec f1_sec], 'Color', [0.2 0.8 0.2], 'LineWidth', 1.5, 'DisplayName', 'Secant');
+                        else
+                            plot(ax, [x0_sec x1_sec], [f0_sec f1_sec], 'Color', [0.2 0.8 0.2], 'LineWidth', 1.5, 'HandleVisibility','off');
+                        end
+                    end
+                end
+                scatter(ax,root,f(root),100,'r','filled','DisplayName','Root');
+                lgd = legend(ax,'show','Location','best');
+                lgd.FontSize = 18;
+            case 'Newton-Raphson'
+                try
+                    df = matlabFunction(diff(str2sym(eq),x),'Vars',x);
+                    [root, its] = newton_raphson_method(f,df,(a+b)/2,tol,max_iter);
+                    table.ColumnName = {'Iteration', 'x0', 'f(x0)', 'df(x0)', 'x1', 'Remark'};
+                    if ~isempty(its)
+                        x0s = cell2mat(its(:,2));
+                        if ~isempty(x0s)
+                            scatter(ax, x0s, f(x0s), 60, 'b', 'filled', 'DisplayName', 'x0');
+                        end
+                        for k = 1:size(its,1)
+                            x0n = its{k,2}; fx0n = its{k,3}; dfx0n = its{k,4};
+                            tangent_x = linspace(x0n-1, x0n+1, 10);
+                            tangent_y = fx0n + dfx0n*(tangent_x-x0n);
+                            if k == 1
+                                plot(ax, tangent_x, tangent_y, '--', 'Color', [0.8 0.2 0.8], 'LineWidth', 1, 'DisplayName', 'Tangent');
+                            else
+                                plot(ax, tangent_x, tangent_y, '--', 'Color', [0.8 0.2 0.8], 'LineWidth', 1, 'HandleVisibility','off');
+                            end
+                        end
+                    end
+                    scatter(ax,root,f(root),100,'r','filled','DisplayName','Root');
+                    lgd = legend(ax,'show','Location','best');
+                    lgd.FontSize = 18;
+                catch err
+                    resultLbl.Text = ['Error in Newton-Raphson: ', err.message];
+                    return;
+                end
+            case 'Regula Falsi'
+                [root, its] = regula_falsi_method(f,a,b,tol,max_iter);
+                table.ColumnName = {'Iteration', 'a', '\u0394x', 'b', 'f(a)', 'f(b)', 'f(a)*f(b)', 'Remark'};
+                if ~isempty(its)
+                    for k = 1:size(its,1)
+                        x1 = its{k,2}; xu = its{k,4};
+                        if k == 1
+                            plot(ax, [x1 xu], [0 0], 'mo-', 'LineWidth', 1.5, 'DisplayName', 'Interval');
+                        else
+                            plot(ax, [x1 xu], [0 0], 'mo-', 'LineWidth', 1.5, 'HandleVisibility','off');
+                        end
+                    end
+                end
+                scatter(ax,root,f(root),100,'r','filled','DisplayName','Root');
+                lgd = legend(ax,'show','Location','best');
+                lgd.FontSize = 18;
+            case 'Incremental'
+                [root, its] = incremental_search_method(f, a, b, tol, max_iter);
+                table.ColumnName = {'Iteration', 'x0', 'x1', 'f(x0)', 'f(x1)', 'Remark'};
+                if ~isempty(its)
+                    x0s = cell2mat(its(:,2));
+                    x1s = cell2mat(its(:,3));
+                    scatter(ax, x0s, f(x0s), 60, 'b', 'filled', 'DisplayName', 'x0');
+                    scatter(ax, x1s, f(x1s), 60, 'g', 'filled', 'DisplayName', 'x1');
+                    for k = 1:size(its,1)
+                        plot(ax, [its{k,2} its{k,3}], [its{k,4} its{k,5}], 'c-', 'LineWidth', 1.5, 'HandleVisibility','off');
+                    end
+                end
+                if ~isnan(root)
+                    scatter(ax,root,f(root),100,'r','filled','DisplayName','Root');
+                end
+                lgd = legend(ax,'show','Location','best');
+                lgd.FontSize = 18;
+        end
+        if isempty(its)
+            table.Data = {};
+        else
+            table.Data = its;
+        end
+        if isnan(root)
+            resultLbl.Text = 'No root found in interval.';
+        else
+            resultLbl.Text = sprintf('Root ≈ %.10f',root);
+        end
+        hold(ax,'off');
+        ax.Title.String = ['Method: ',method];
+        ax.XLabel.String = 'x';
+        ax.YLabel.String = 'f(x)';
+        % grid(ax,'on'); (already set above)
+    end
+
+    function resetApp()
+        eqEdit.Value = 'x^3-x-2';
+        methodDropdown.Value = methodNames{1};
+        cla(ax, 'reset'); % Fully reset the axes
+        hold(ax, 'off');  % Release any hold state
+        table.Data = {};
+        resultLbl.Text = 'Result: ';
+    end
+
+    function showInstructions()
+        msg = sprintf([ ...
+            'Instructions:\n', ...
+            '1. Enter your function f(x) in the input box at the top.\n', ...
+            '2. Select a root-finding method from the dropdown.\n', ...
+            '3. Click ''Run'' to compute and visualize the root.\n', ...
+            '4. The table below the graph shows iteration details.\n', ...
+            '5. Click ''Reset'' to clear and start over.' ...
+        ]);
+        uialert(fig, msg, 'Instructions');
+    end
+
+    function buttonFlash(btn, callback)
+        origColor = btn.BackgroundColor;
+        btn.BackgroundColor = [0.2 0.6 1]; % Flash to blue
+        t = timer('StartDelay', 0.15, 'TimerFcn', @(~,~)resetColor());
+        start(t);
+
+        function resetColor()
+            btn.BackgroundColor = origColor;
+            delete(t);
+            callback();
+        end
+    end
+
+    % --- At the top of your main function, after creating the buttons ---
+    instructionsOrigPos = instructionsBtn.Position;
+    instructionsOrigFont = instructionsBtn.FontSize;
+    resetOrigPos = resetBtn.Position;
+    resetOrigFont = resetBtn.FontSize;
+    instructionsHovered = false;
+    resetHovered = false;
+    
+    % Animation timers for smooth hover
+    instructionsAnimTimer = [];
+    resetAnimTimer = [];
+    
+    fig.WindowButtonMotionFcn = @onMouseMove;
+
+    function onMouseMove(~,~)
+        mouse = fig.CurrentPoint;
+        % Instructions button hover
+        btnPos = instructionsOrigPos;
+        if mouse(1) >= btnPos(1) && mouse(1) <= btnPos(1)+btnPos(3) && ...
+           mouse(2) >= btnPos(2) && mouse(2) <= btnPos(2)+btnPos(4)
+            if ~instructionsHovered
+                animateButtonSize(instructionsBtn, instructionsOrigPos, instructionsOrigFont, 1.15, 'in', 'instructions');
+                instructionsHovered = true;
+            end
+        else
+            if instructionsHovered
+                animateButtonSize(instructionsBtn, instructionsOrigPos, instructionsOrigFont, 1.0, 'out', 'instructions');
+                instructionsHovered = false;
+            end
+        end
+        % Reset button hover
+        btnPos = resetOrigPos;
+        if mouse(1) >= btnPos(1) && mouse(1) <= btnPos(1)+btnPos(3) && ...
+           mouse(2) >= btnPos(2) && mouse(2) <= btnPos(2)+btnPos(4)
+            if ~resetHovered
+                animateButtonSize(resetBtn, resetOrigPos, resetOrigFont, 1.15, 'in', 'reset');
+                resetHovered = true;
+            end
+        else
+            if resetHovered
+                animateButtonSize(resetBtn, resetOrigPos, resetOrigFont, 1.0, 'out', 'reset');
+                resetHovered = false;
+            end
+        end
+    end
+
+    function animateButtonSize(btn, origPos, origFont, targetScale, direction, which)
+        % which: 'instructions' or 'reset'
+        % direction: 'in' (grow) or 'out' (shrink)
+        steps = 16; % Increased from 8 for smoother animation
+        duration = 0.15; % Slightly longer for smoothness
+        interval = duration / steps;
+        if strcmp(which, 'instructions')
+            if ~isempty(instructionsAnimTimer) && isvalid(instructionsAnimTimer)
+                stop(instructionsAnimTimer);
+                delete(instructionsAnimTimer);
+            end
+        else
+            if ~isempty(resetAnimTimer) && isvalid(resetAnimTimer)
+                stop(resetAnimTimer);
+                delete(resetAnimTimer);
+            end
+        end
+        % Get current scale
+        curPos = btn.Position;
+        curFont = btn.FontSize;
+        origCenter = [origPos(1)+origPos(3)/2, origPos(2)+origPos(4)/2];
+        curScale = curPos(3)/origPos(3); % width scale
+        % Compute scale steps
+        scaleDiff = targetScale - curScale;
+        scaleSteps = linspace(curScale, targetScale, steps+1);
+        fontSteps = linspace(curFont, origFont*targetScale, steps+1);
+        stepIdx = 2;
+        function doStep(~,~)
+            if stepIdx > length(scaleSteps)
+                if strcmp(which, 'instructions')
+                    instructionsAnimTimer = [];
+                else
+                    resetAnimTimer = [];
+                end
+                return;
+            end
+            scale = scaleSteps(stepIdx);
+            font = fontSteps(stepIdx);
+            newPos = [origCenter(1)-origPos(3)*scale/2, origCenter(2)-origPos(4)*scale/2, origPos(3)*scale, origPos(4)*scale];
+            btn.Position = newPos;
+            btn.FontSize = font;
+            stepIdx = stepIdx + 1;
+        end
+        t = timer('ExecutionMode','fixedSpacing','Period',interval,'TasksToExecute',steps,'TimerFcn',@doStep);
+        if strcmp(which, 'instructions')
+            instructionsAnimTimer = t;
+        else
+            resetAnimTimer = t;
+        end
+        start(t);
+    end
+
+    function showVariables()
+        vars = evalin('base', 'whos');
+        if isempty(vars)
+            msg = 'No variables in workspace.';
+        else
+            msg = sprintf('%-15s %-10s %-10s\n', 'Name', 'Size', 'Class');
+            for k = 1:length(vars)
+                msg = [msg, sprintf('%-15s %-10s %-10s\n', vars(k).name, mat2str(vars(k).size), vars(k).class)];
+            end
+        end
+        uialert(fig, msg, 'Workspace Variables');
+    end
+
+    function toggleDiary()
+        persistent diaryOn
+        if isempty(diaryOn) || ~diaryOn
+            [file, path] = uiputfile('session_diary.txt', 'Save Diary As');
+            if isequal(file,0)
+                return;
+            end
+            diary(fullfile(path, file));
+            diaryOn = true;
+            uialert(fig, 'Diary started. All commands/results will be saved.', 'Diary On');
+        else
+            diary off;
+            diaryOn = false;
+            uialert(fig, 'Diary stopped.', 'Diary Off');
+        end
+    end
+
+    function plotExample()
+        t = (0:0.05:5)';
+        y = -0.45 + 0.56*t + 2.34*t.^2 + 5.6*t.^3 + 9.45*t.^4 + 24.59*t.^5;
+        plot(ax, t, y, 'o-');
+        ax.Title.String = 'Example Plot: Polynomial';
+        ax.XLabel.String = 't';
+        ax.YLabel.String = 'y';
+    end
+end
+
+function eq = preprocess_equation(eq)
+    eq = strtrim(eq);
+    
+    % Handle common trigonometric patterns first
+    eq = regexprep(eq, 'sin\((.*?)\)\s*=\s*0', 'sin($1)');
+    eq = regexprep(eq, 'cos\((.*?)\)\s*=\s*0', 'cos($1)');
+    eq = regexprep(eq, 'tan\((.*?)\)\s*=\s*0', 'tan($1)');
+    
+    % Convert equations of the form expr1 = expr2 to expr1 - (expr2)
+    eqParts = regexp(eq, '^(.*)=(.*)$', 'tokens', 'once');
+    if ~isempty(eqParts)
+        eq = [strtrim(eqParts{1}) ' - (' strtrim(eqParts{2}) ')'];
+    end
+    
+    % Rest of the preprocessing
+    eq = strrep(eq,'^','.^');
+    eq = regexprep(eq,'ln\((.*?)\)','log($1)');
+    eq = regexprep(eq,'e\^([a-zA-Z0-9_()]+)','exp($1)');
+    eq = regexprep(eq,'\bpi\b','pi');
+    eq = regexprep(eq,'\be\b','exp(1)');
+    
+    % Insert * for implicit multiplication
+    eq = regexprep(eq,'(\d)([a-zA-Z])','$1*$2');
+    eq = regexprep(eq,'([a-zA-Z])(\d)','$1*$2');
+    eq = regexprep(eq,'(\d)\(','$1*(');
+    eq = regexprep(eq,'([a-zA-Z])\(','$1*(');
+    eq = regexprep(eq,'\)\(','\)*(');
+    eq = regexprep(eq,'\)([a-zA-Z])','\)*$1');
+    
+    % Factorial
+    eq = regexprep(eq, '(\w+)!', 'factorial($1)');
+    
+    % Absolute value: convert |...| to abs(...)
+    eq = regexprep(eq, '\|([^\|]+)\|', 'abs($1)');
+    
+    % Greek letters (expanded)
+    greek_map = { ...
+        'α', 'alpha'; 'β', 'beta'; 'γ', 'gamma'; 'δ', 'delta'; 'ε', 'epsilon'; 'ζ', 'zeta';
+        'η', 'eta'; 'θ', 'theta'; 'ι', 'iota'; 'κ', 'kappa'; 'λ', 'lambda'; 'μ', 'mu';
+        'ν', 'nu'; 'ξ', 'xi'; 'ο', 'omicron'; 'π', 'pi'; 'ρ', 'rho'; 'σ', 'sigma';
+        'τ', 'tau'; 'υ', 'upsilon'; 'φ', 'phi'; 'χ', 'chi'; 'ψ', 'psi'; 'ω', 'omega';
+        'Α', 'Alpha'; 'Β', 'Beta'; 'Γ', 'Gamma'; 'Δ', 'Delta'; 'Ε', 'Epsilon'; 'Ζ', 'Zeta';
+        'Η', 'Eta'; 'Θ', 'Theta'; 'Ι', 'Iota'; 'Κ', 'Kappa'; 'Λ', 'Lambda'; 'Μ', 'Mu';
+        'Ν', 'Nu'; 'Ξ', 'Xi'; 'Ο', 'Omicron'; 'Π', 'Pi'; 'Ρ', 'Rho'; 'Σ', 'Sigma';
+        'Τ', 'Tau'; 'Υ', 'Upsilon'; 'Φ', 'Phi'; 'Χ', 'Chi'; 'Ψ', 'Psi'; 'Ω', 'Omega'
+    };
+    for k = 1:size(greek_map,1)
+        eq = strrep(eq, greek_map{k,1}, greek_map{k,2});
+    end
+    
+    % LaTeX constructs
+    eq = regexprep(eq, '\\frac{([^}]+)}{([^}]+)}', '($1)/($2)');
+    eq = regexprep(eq, '\\sqrt{([^}]+)}', 'sqrt($1)');
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)\^\{([^}]+)\}', '$1^$2');
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)_\{([^}]+)\}', '$1$2');
+    eq = strrep(eq, '\left(', '(');
+    eq = strrep(eq, '\right)', ')');
+    
+    % Summation/Product (expanded)
+    eq = regexprep(eq, 'sum_{(\w+)=(\d+)}\^{(\w+)}\s*([^\s]+)', 'symsum($4, $1, $2, $3)');
+    eq = regexprep(eq, 'prod_{(\w+)=(\d+)}\^{(\w+)}\s*([^\s]+)', 'symprod($4, $1, $2, $3)');
+    
+    % Piecewise (advanced)
+    eq = regexprep(eq, '{\s*([^,;]+),\s*([^;]+);\s*([^,;]+),\s*([^}]+)\s*}', ...
+        'piecewise($2, $1, $4, $3)');
+    
+    % Function calls without parentheses
+    function_names = 'sin|cos|tan|exp|log|sqrt|abs|asin|acos|atan|sinh|cosh|tanh|floor|ceil|sign';
+    eq = regexprep(eq, ['\\b(' function_names ')\\s+([a-zA-Z][a-zA-Z0-9_]*)\\b'], '$1($2)');
+    
+    % Rearrange equations of the form f(x) = g(x) to f(x) - (g(x))
+    if contains(eq, '=')
+        parts = split(eq, '=');
+        if numel(parts) == 2
+            eq = sprintf('(%s)-(%s)', strtrim(parts{1}), strtrim(parts{2}));
+        end
+    end
+    
+    % Inequalities
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)\s*<=\s*([a-zA-Z0-9_]+)', '$1 <= $2');
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)\s*>=\s*([a-zA-Z0-9_]+)', '$1 >= $2');
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)\s*<\s*([a-zA-Z0-9_]+)', '$1 < $2');
+    eq = regexprep(eq, '([a-zA-Z0-9_]+)\s*>\s*([a-zA-Z0-9_]+)', '$1 > $2');
+end
+
+function [root, iterations] = bisection_method(f, a, b, tol, max_iter)
+    if f(a)*f(b) >= 0, root = NaN; iterations = {}; return; end
+    iterations = {};
+    for i = 1:max_iter
+        c = (a+b)/2;
+        fa = f(a); fb = f(b); fc = f(c);
+        delta = b - a;
+        prod = fa * fb;
+        remark = 'Go to next interval';
+        iterations(end+1,:) = {i, a, delta, b, fa, fb, prod, remark};
+        if abs(fc) < tol || delta/2 < tol, root = c; return; end
+        if fa*fc < 0, b = c; else, a = c; end
+    end
+    root = c;
+end
+
+function [root, iterations] = secant_method(f, x0, x1, tol, max_iter)
+    iterations = {}; % Always initialize
+    fx0 = f(x0);
+    fx1 = f(x1);
+    x2 = x1; % Initialize x2 to avoid "Unrecognized variable" error
+    for k = 1:max_iter
+        if abs(fx1 - fx0) < eps
+            remark = 'Divide by zero';
+            iterations(end+1,:) = {k, x0, x1, fx0, fx1, NaN, remark};
+            root = x1; % Assign root to last valid value
+            return;
+        end
+        x2 = x1 - fx1 * (x1 - x0) / (fx1 - fx0);
+        remark = '';
+        iterations(end+1,:) = {k, x0, x1, fx0, fx1, x2, remark};
+        if abs(x2 - x1) < tol
+            root = x2;
+            return;
+        end
+        x0 = x1;
+        fx0 = fx1;
+        x1 = x2;
+        fx1 = f(x1);
+    end
+    root = x2; % Always assign root at the end
+end
+
+function [root, iterations] = newton_raphson_method(f, df, x0, tol, max_iter)
+    iterations = {}; % Always initialize
+    x1 = x0; % Initialize x1 to avoid "Unrecognized variable" error
+    for k = 1:max_iter
+        fx0 = f(x0);
+        dfx0 = df(x0);
+        if abs(dfx0) < eps
+            remark = 'Zero derivative';
+            iterations(end+1,:) = {k, x0, fx0, dfx0, NaN, remark};
+            root = x0; % Assign root to last valid value
+            return;
+        end
+        x1 = x0 - fx0 / dfx0;
+        remark = '';
+        iterations(end+1,:) = {k, x0, fx0, dfx0, x1, remark};
+        if abs(x1 - x0) < tol
+            root = x1;
+            return;
+        end
+        x0 = x1;
+    end
+    root = x1; % Always assign root at the end
+end
+
+function [root, iterations] = regula_falsi_method(f, a, b, tol, max_iter)
+    if f(a)*f(b) >= 0, root = NaN; iterations = {}; return; end
+    iterations = {};
+    for i = 1:max_iter
+        fa = f(a); fb = f(b);
+        c = (a*fb - b*fa)/(fb-fa);
+        fc = f(c);
+        delta = b - a;
+        prod = fa * fb;
+        remark = 'Go to next interval';
+        iterations(end+1,:) = {i, a, delta, b, fa, fb, prod, remark};
+        if abs(fc) < tol, root = c; return; end
+        if fa*fc < 0, b = c; else, a = c; end
+    end
+    root = c;
+end
+
+function [root, iterations] = incremental_search_method(f, a, b, tol, max_iter)
+    % Accurate incremental search for root intervals
+    iterations = {};
+    N = 1000; % Number of increments
+    x0 = a;
+    dx = (b-a)/N;
+    found = false;
+    for i = 1:N
+        x1 = x0 + dx;
+        fx0 = f(x0);
+        fx1 = f(x1);
+        remark = '';
+        if fx0*fx1 < 0
+            found = true;
+            remark = 'Sign change detected';
+            iterations(end+1,:) = {i, x0, x1, fx0, fx1, remark};
+            break;
+        else
+            remark = 'No sign change';
+            iterations(end+1,:) = {i, x0, x1, fx0, fx1, remark};
+        end
+        x0 = x1;
+        if i >= max_iter, break; end
+    end
+    if found
+        % Refine root using bisection in the detected interval
+        [root, ~] = bisection_method(f, iterations{end,2}, iterations{end,3}, tol, max_iter);
+    else
+        root = NaN;
+    end
+end
+
+function simulate_hover_button
+    fig = uifigure('Position', [100 100 400 200]);
+    btn = uibutton(fig, 'Position', [150 80 100 40], 'Text', 'Hover Me');
+    origPos = btn.Position;
+    origFont = btn.FontSize;
+    isHovered = false;
+
+    fig.WindowButtonMotionFcn = @(src, event)onMouseMove();
+
+    function onMouseMove()
+        mouse = fig.CurrentPoint;
+        btnPos = btn.Position;
+        % Check if mouse is inside button
+        if mouse(1) >= btnPos(1) && mouse(1) <= btnPos(1)+btnPos(3) && ...
+           mouse(2) >= btnPos(2) && mouse(2) <= btnPos(2)+btnPos(4)
+            if ~isHovered
+                btn.Position = [btnPos(1)-5 btnPos(2)-5 btnPos(3)+10 btnPos(4)+10];
+                btn.FontSize = origFont * 1.15;
+                isHovered = true;
+            end
+        else
+            if isHovered    
+                btn.Position = origPos;
+                btn.FontSize = origFont;
+                isHovered = false;
+            end
+        end
+    end
+end
 
