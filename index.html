@@ -86,7 +86,7 @@
                 </div>
                 <div class="stat-item">
                     <span class="stat-number">3</span>
-                    <span class="stat-label">Years Coding</span>
+                    <span class="stat-label">Years of Coding</span>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
             </div>
             <div class="about-grid">
                 <div class="about-card">
-                    <div class="card-icon"><i class="fas fa-user"></i></div>
+                    <div class="card-icon profile-image"><img src="assets/images/profile.png" alt="Zandrei Profile" style="width: 60px; height: 60px; object-fit: cover;"></div>
                     <h3>Personal Info</h3>
                     <ul class="info-list">
                         <li><strong>Name:</strong> Zandrei Carl M. Dunque</li>
@@ -240,7 +240,7 @@
 
                 <article class="project-card">
                     <div class="project-image">
-                        <img src="assets/images/new-cars-model/415005284_3245369105757701_340226393819375603_n.png" alt="Rental System">
+                        <img src="assets/images/new-cars-model/rental-house-system.png" alt="Rental System">
                     </div>
                     <div class="project-content">
                         <div class="project-tags">
@@ -279,7 +279,7 @@
                             <span class="project-tag">Embedded</span>
                         </div>
                         <h3 class="project-title">Fire Alarm System</h3>
-                        <p class="project-description">Automated fire detection and alarm system with sensor integration and real-time monitoring capabilities.</p>
+                        <p class="project-description">Automated fire detection and alarm system with sensor integration and real-time monitoring capabilities on Telegram.</p>
                     </div>
                 </article>
 
@@ -309,7 +309,7 @@
                             <span class="project-tag">Sensors</span>
                         </div>
                         <h3 class="project-title">Carpark System Online</h3>
-                        <p class="project-description">Smart parking system with LED indicators, real-time slot monitoring, and online status tracking.</p>
+                        <p class="project-description">Smart parking system with LED Screen, real-time slot monitoring, and online status tracking.</p>
                     </div>
                 </article>
 
@@ -735,13 +735,15 @@
                     <p>Computer Engineering student passionate about creating innovative solutions.</p>
                 </div>
                 <div class="footer-links">
-                    <a href="#home">Home</a>
-                    <a href="#about">About</a>
-                    <a href="#projects">Projects</a>
-                    <a href="#skills">Skills</a>
-                    <a href="#certificates">Certificates</a>
-                    <a href="#videos">Project Demos</a>
-                    <a href="#contact">Contact</a>
+                    <div class="footer-social">
+                        <h4>Connect With Me</h4>
+                        <div class="social-icons-row">
+                            <a href="#" class="social-icon-footer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon-footer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon-footer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="mailto:carldunque2003@gmail.com" class="social-icon-footer" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -755,13 +757,13 @@
 
     <!-- Certificate Lightbox -->
     <div class="lightbox" id="lightbox">
-        <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">
-            <i class="fas fa-times"></i>
-        </button>
         <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)" aria-label="Previous image">
             <i class="fas fa-chevron-left"></i>
         </button>
         <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">
+                <i class="fas fa-times"></i>
+            </button>
             <img id="lightbox-img" src="" alt="Certificate fullscreen view">
         </div>
         <button class="lightbox-nav lightbox-next" onclick="changeImage(1)" aria-label="Next image">
@@ -776,9 +778,6 @@
             <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video">
                 <i class="fas fa-times"></i>
             </button>
-            <button class="video-modal-minimize" onclick="minimizeVideoModal()" aria-label="Minimize video">
-                <i class="fas fa-minus"></i>
-            </button>
             <div class="video-modal-content">
                 <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 <video id="videoLocal" controls style="display: none;">
@@ -786,13 +785,6 @@
                     Your browser does not support the video tag.
                 </video>
             </div>
-        </div>
-        <!-- Minimized video pill -->
-        <div class="video-minimized-pill" id="videoMinimizedPill" onclick="restoreVideoModal()">
-            <span class="pill-text">Video Playing</span>
-            <button class="pill-close" onclick="closeMinimizedVideo(event)" aria-label="Close video">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
     </div>
 
@@ -802,9 +794,6 @@
         <div class="project-modal-container">
             <button class="project-modal-close" onclick="closeProjectModal()" aria-label="Close project">
                 <i class="fas fa-times"></i>
-            </button>
-            <button class="project-modal-minimize" onclick="minimizeProjectModal()" aria-label="Minimize project">
-                <i class="fas fa-minus"></i>
             </button>
             <div class="project-modal-content">
                 <div class="project-modal-image">
@@ -816,13 +805,6 @@
                     <p id="projectModalDesc"></p>
                 </div>
             </div>
-        </div>
-        <!-- Minimized project pill -->
-        <div class="project-minimized-pill" id="projectMinimizedPill" onclick="restoreProjectModal()">
-            <span class="pill-text">Project View</span>
-            <button class="pill-close" onclick="closeMinimizedProject(event)" aria-label="Close project">
-                <i class="fas fa-times"></i>
-            </button>
         </div>
     </div>
 

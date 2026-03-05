@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zandrei | Computer Engineer & Developer</title>
+    <meta name="description" content="Portfolio of Zandrei - Computer Engineering student specializing in web development, embedded systems, and software engineering.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/modern-portfolio.css">
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader">
+            <div class="circle"></div>
+        </div>
+        <p class="loader-text">Loading...</p>
+    </div>
+
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="hamburger"></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#certificates" class="nav-link">Certificates</a></li>
+                <li><a href="#videos" class="nav-link">Project Demos</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-icon"><i class="fas fa-code"></i></span>
+                <span class="badge-text">Computer Engineering Student</span>
+            </div>
+            <h1 class="hero-title">
+                Hi, I'm <span class="highlight">Zandrei</span>
+            </h1>
+            <p class="hero-subtitle">
+                I build <span class="typing-text"></span>
+            </p>
+            <p class="hero-description">
+                Passionate about creating innovative solutions through code and video editing technology. Specializing in web development, 
+                embedded systems, software engineering, and video production with a focus on clean, efficient, and creative solutions.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <span>View My Work</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">10</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Years of Coding</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: Home to About -->
+    <div class="section-divider divider-wave-1">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,85.3C672,75,768,85,864,96C960,107,1056,117,1152,112C1248,107,1344,85,1392,74.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" fill="var(--card-bg-alt)" opacity="0.5"></path>
+            <path d="M0,96L48,90.7C96,85,192,75,288,80C384,85,480,107,576,112C672,117,768,107,864,96C960,85,1056,75,1152,80C1248,85,1344,107,1392,117.3L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z" fill="var(--card-bg-alt)"></path>
+        </svg>
+    </div>
+
+    <section id="about" class="about">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">About Me</span>
+                <h2 class="section-title">Who I Am</h2>
+                <p class="section-subtitle">Get to know me better</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="card-icon profile-image"><img src="assets/images/profile.png" alt="Zandrei Profile" style="width: 60px; height: 60px; object-fit: cover;"></div>
+                    <h3>Personal Info</h3>
+                    <ul class="info-list">
+                        <li><strong>Name:</strong> Zandrei Carl M. Dunque</li>
+                        <li><strong>Age:</strong> 23 Years Old</li>
+                        <li><strong>Education:</strong> Computer Engineering</li>
+                        <li><strong>Location:</strong> Philippines, Bohol, Tagbilaran City</li>
+                    </ul>
+                </div>
+                <div class="about-card featured">
+                    <div class="card-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Education & Goals</h3>
+                    <p>Currently pursuing Computer Engineering with a passion for software development and video editing. My goal is to become a versatile developer and create compelling digital content that blends technical expertise with creative expression.</p>
+                </div>
+                <div class="about-card">
+                    <div class="card-icon"><i class="fas fa-heart"></i></div>
+                    <h3>Interests</h3>
+                    <div class="interest-tags">
+                        <span class="tag">Web Development</span>
+                
+                        <span class="tag">Video Editing</span>
+                        <span class="tag">Internet Of Things</span>
+                        <span class="tag">Debugging</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: About to Projects -->
+    <div class="section-divider divider-gradient">
+        <div class="divider-line"></div>
+        <div class="divider-dots">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="divider-line"></div>
+    </div>
+
+    <section id="projects" class="projects">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Portfolio</span>
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Some of my recent work</p>
+            </div>
+            <div class="projects-grid">
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/Screenshot 2024-03-09 201256.png" alt="About Me Page Project">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                        </div>
+                        <h3 class="project-title">About Me Page</h3>
+                        <p class="project-description">A responsive and engaging "About Me" page with modern design principles and interactive elements.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/Screenshot (33).png" alt="JSP Application">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Java</span>
+                            <span class="project-tag">JSP</span>
+                            <span class="project-tag">NetBeans</span>
+                        </div>
+                        <h3 class="project-title">JSP Web Application</h3>
+                        <p class="project-description">Multi-functional web application with dynamic page routing and button functionality built on NetBeans.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/448629570_343980892054188_7676073872377173696_n.jpg" alt="Online Information System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Java</span>
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">Arithmetic</span>
+                        
+                        </div>
+                        <h3 class="project-title">Arithmetic Calculator</h3>
+                        <p class="project-description">A sleek, dark-themed calculator application featuring a modern intuitive interface with standard arithmetic operations, clear display, and responsive button layout.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/Screenshot (62).png" alt="Calculator App">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Java</span>
+                            <span class="project-tag">HTML</span>
+                            <span class="project-tag">CSS</span>
+                            <span class="project-tag">Database</span>
+                            <span class="project-tag">JavaScript</span>
+                        </div>
+                        <h3 class="project-title">Laboratory System</h3>
+                        <p class="project-description">A university-branded laboratory management system with role-based access control featuring dedicated login portals for administrators, teachers, and students to streamline laboratory operations and resource management.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/rental-house-system.png" alt="Rental System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">C++</span>
+                            <span class="project-tag">Turbo C++</span>
+                            
+                        </div>
+                        <h3 class="project-title">Rental House System</h3>
+                        <p class="project-description">Console-based reservation system with booking management, availability tracking, and authentication.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/new-cars-model/root-finder-1.png" alt="Python Root Finder">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                        
+                         
+                        </div>
+                        <h3 class="project-title">Python Root Finder</h3>
+                        <p class="project-description">Numerical methods application for solving equations with graphical and tabular output.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/a1a2639e-204f-4ce1-b650-8be32acf6973.jpg" alt="Fire Alarm System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Arduino</span>
+                            <span class="project-tag">IoT</span>
+                            <span class="project-tag">Embedded</span>
+                        </div>
+                        <h3 class="project-title">Fire Alarm System</h3>
+                        <p class="project-description">Automated fire detection and alarm system with sensor integration and real-time monitoring capabilities on Telegram.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/679737b2-bbf3-4c05-97fe-a50605116ca5.jpg" alt="Library Management System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Java</span>
+                            <span class="project-tag">Database</span>
+                            <span class="project-tag">Swing</span>
+                        </div>
+                        <h3 class="project-title">Library Management System</h3>
+                        <p class="project-description">Comprehensive library management application with book tracking, user management, and lending system.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/530e3591-f774-4305-86f3-e8ea9fc87d55.jpg" alt="LED Carpark System">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Arduino ESP32</span>
+                            <span class="project-tag">IoT</span>
+                            <span class="project-tag">Sensors</span>
+                        </div>
+                        <h3 class="project-title">Carpark System Online</h3>
+                        <p class="project-description">Smart parking system with LED Screen, real-time slot monitoring, and online status tracking.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/3fb927e9-5a78-45cc-8799-ab381cc00f04.jpg" alt="16 Segment Logic">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Cathode</span>
+                            <span class="project-tag">Potentiometer</span>
+                            <span class="project-tag">Electronics</span>
+                        </div>
+                        <h3 class="project-title">16 Segment Logic</h3>
+                        <p class="project-description">Digital logic project implementing 16-segment display control with circuit design and programming.</p>
+                    </div>
+                </article>
+
+                <article class="project-card">
+                    <div class="project-image">
+                        <img src="assets/images/Screenshot 2026-03-05 191941.png" alt="Multilevel Preemptive Scheduler">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-tags">
+                            <span class="project-tag">Python</span>
+                        </div>
+                        <h3 class="project-title">Multilevel Preemptive Scheduler</h3>
+                        <p class="project-description">A process scheduling simulation application featuring a dark-themed GUI that visualizes multilevel preemptive scheduling algorithms with real-time process queue management and execution tracking.</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: Projects to Skills -->
+    <div class="section-divider divider-angled">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path d="M0,100 L0,50 Q360,0 720,50 T1440,50 L1440,100 Z" fill="var(--card-bg)"></path>
+            <path d="M0,100 L0,70 Q360,20 720,70 T1440,70 L1440,100 Z" fill="var(--card-bg-alt)" opacity="0.5"></path>
+        </svg>
+    </div>
+
+    <section id="skills" class="skills">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Expertise</span>
+                <h2 class="section-title">Skills & Technologies</h2>
+                <p class="section-subtitle">Tools and technologies I work with</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3><i class="fas fa-code"></i> Programming</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">HTML/CSS</span>
+                            <div class="skill-bar"><div class="skill-progress" data-width="100%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">JavaScript</span>
+                            <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Java</span>
+                            <div class="skill-bar"><div class="skill-progress" data-width="70%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">Python</span>
+                            <div class="skill-bar"><div class="skill-progress" data-width="95%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">C++</span>
+                            <div class="skill-bar"><div class="skill-progress" data-width="50%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-tools"></i> Tools & Frameworks</h3>
+                    <div class="skill-tags">
+                     <span class="skill-tag">Arduino</span>
+					 <span class="skill-tag">After Effects</span>
+                        
+                        
+                        
+                        
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3><i class="fas fa-robot"></i> Specializations</h3>
+                    <div class="specialization-cards">
+                        <div class="spec-card"><i class="fas fa-laptop-code"></i><span>Web Development</span></div>
+                        <div class="spec-card"><i class="fas fa-microchip"></i><span>Embedded Systems</span></div>
+                        <div class="spec-card"><i class="fas fa-video"></i><span>Video Editing</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: Skills to Certificates -->
+    <div class="section-divider divider-waves">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <defs>
+                <linearGradient id="waveGradient1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#6366f1;stop-opacity:0.4" />
+                    <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:0.5" />
+                    <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.4" />
+                </linearGradient>
+                <linearGradient id="waveGradient2" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.3" />
+                    <stop offset="50%" style="stop-color:#ec4899;stop-opacity:0.4" />
+                    <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.3" />
+                </linearGradient>
+            </defs>
+            <path d="M0,50 C240,90 480,10 720,50 C960,90 1200,10 1440,50 L1440,100 L0,100 Z" fill="url(#waveGradient1)"></path>
+            <path d="M0,70 C360,20 720,100 1080,50 C1260,30 1350,80 1440,70 L1440,100 L0,100 Z" fill="url(#waveGradient2)"></path>
+        </svg>
+    </div>
+
+    <section id="certificates" class="certificates">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Achievements</span>
+                <h2 class="section-title">Certificates & Awards</h2>
+                <p class="section-subtitle">Professional certifications and recognitions</p>
+            </div>
+            <div class="certificates-grid">
+                <!-- Appreciation Certificates (3) -->
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Screenshot 2026-03-05 163554.png" alt="Certificate of Appreciation 1" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-heart"></i> Appreciation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/img20250503_11313454.png" alt="Certificate of Appreciation 2" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-heart"></i> Appreciation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/e3b40384-97c5-4e03-b9df-de0c554b55f3.jpg" alt="Certificate of Appreciation 3" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-heart"></i> Appreciation</span>
+                    </div>
+                </div>
+
+                <!-- Completion Certificate (1) -->
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Screenshot 2025-05-03 132503.png" alt="Certificate of Completion" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-check-circle"></i> Completion</span>
+                    </div>
+                </div>
+
+                <!-- Recognition Certificate (1) -->
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/DUNQUEs.png" alt="Certificate of Recognition" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-star"></i> Recognition</span>
+                    </div>
+                </div>
+
+                <!-- Participation Certificates (9) -->
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Screenshot 2026-03-05 182205.png" alt="Certificate of Participation 1" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Screenshot 2025-05-08 202649.png" alt="Certificate of Participation 2" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Screenshot 2026-03-05 182413.png" alt="Certificate of Participation 3" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/Dunque (1).png" alt="Certificate of Participation 4" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/cb9b4945d92af8e486d07d852202999f-91.png" alt="Certificate of Participation 5" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/DUNQUE.png" alt="Certificate of Participation 6" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/DUNQUEss.png" alt="Certificate of Participation 7" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/DUNQUEssss.jpg" alt="Certificate of Participation 8" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+
+                <div class="certificate-card">
+                    <div class="certificate-image">
+                        <img src="assets/images/zandrei.png" alt="Certificate of Participation 9" loading="lazy">
+                    </div>
+                    <div class="certificate-content">
+                        <span class="cert-badge"><i class="fas fa-hand-paper"></i> Participation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: Certificates to Videos -->
+    <div class="section-divider divider-curve">
+        <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path d="M0,0 Q720,120 1440,0 L1440,120 L0,120 Z" fill="var(--card-bg)"></path>
+            <path d="M0,40 Q720,160 1440,40 L1440,120 L0,120 Z" fill="var(--card-bg-alt)" opacity="0.3"></path>
+        </svg>
+    </div>
+
+    <section id="videos" class="videos">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Showcase</span>
+                <h2 class="section-title">Project Demos</h2>
+                <p class="section-subtitle">Video demonstrations of my work</p>
+            </div>
+            <div class="videos-grid">
+                <div class="video-card">
+                    <div class="video-wrapper" data-video-src="assets/videos/Sumobot ⧸ Hockeybot - Explained.mp4" onclick="openVideoModal('assets/videos/Sumobot ⧸ Hockeybot - Explained.mp4')">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/GLfobzxzKGA/maxresdefault.jpg" alt="Sumobot Demo Thumbnail" loading="lazy">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3><i class="fas fa-robot"></i> Sumobot & Hockeybot</h3>
+                </div>
+                <div class="video-card">
+                    <div class="video-wrapper" data-video-src="assets/videos/Python Root Finder.mp4" onclick="openVideoModal('assets/videos/Python Root Finder.mp4')">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/6oTiBXNUj18/maxresdefault.jpg" alt="Python Root Finder Demo Thumbnail" loading="lazy">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3><i class="fab fa-python"></i> Python Root Finder</h3>
+                </div>
+                <div class="video-card">
+                    <div class="video-wrapper" data-video-src="assets/videos/Matlab Root Finder.mp4" onclick="openVideoModal('assets/videos/Matlab Root Finder.mp4')">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/Iu_AbvKCUNE/maxresdefault.jpg" alt="MATLAB Root Finder Demo Thumbnail" loading="lazy">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <h3><i class="fas fa-calculator"></i> MATLAB Root Finder</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Divider: Videos to Contact -->
+    <div class="section-divider divider-fade">
+        <div class="fade-line"></div>
+    </div>
+
+    <section id="contact" class="contact">
+        <div class="section-bubbles">
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+            <div class="section-bubble"></div>
+        </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Connect</span>
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Let's work together</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Let's discuss your project</h3>
+                    <p>I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision.</p>
+                    <div class="contact-items">
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                            <div class="contact-detail">
+                                <span class="label">Email</span>
+                                <a href="mailto:carldunque2003@gmail.com">carldunque2003@gmail.com</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                            <div class="contact-detail">
+                                <span class="label">Phone</span>
+                                <a href="tel:09196469471">09919624851</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="contact-detail">
+                                <span class="label">Location</span>
+                                <span>Philippines, Bohol, Tagbilaran City</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-link" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="contact-cta">
+                    <div class="cta-card">
+                        <i class="fas fa-paper-plane"></i>
+                        <h3>Ready to start?</h3>
+                        <p>Have a project in mind? Let's create something amazing together.</p>
+                        <a href="mailto:carldunque2003@gmail.com" class="btn btn-primary btn-large">Send Message</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo"><span>Zandrei</span><span class="dot">.</span></a>
+                    <p>Computer Engineering student passionate about creating innovative solutions.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-social">
+                        <h4>Connect With Me</h4>
+                        <div class="social-icons-row">
+                            <a href="#" class="social-icon-footer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                            <a href="#" class="social-icon-footer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-icon-footer" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                            <a href="mailto:carldunque2003@gmail.com" class="social-icon-footer" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+            </div>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Certificate Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-nav lightbox-prev" onclick="changeImage(-1)" aria-label="Previous image">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close lightbox">
+                <i class="fas fa-times"></i>
+            </button>
+            <img id="lightbox-img" src="" alt="Certificate fullscreen view">
+        </div>
+        <button class="lightbox-nav lightbox-next" onclick="changeImage(1)" aria-label="Next image">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-overlay" onclick="closeVideoModal()"></div>
+        <div class="video-modal-container">
+            <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close video">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-modal-content">
+                <iframe id="videoIframe" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <video id="videoLocal" controls style="display: none;">
+                    <source src="" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div class="project-modal" id="projectModal">
+        <div class="project-modal-overlay" onclick="closeProjectModal()"></div>
+        <div class="project-modal-container">
+            <button class="project-modal-close" onclick="closeProjectModal()" aria-label="Close project">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="project-modal-content">
+                <div class="project-modal-image">
+                    <img id="projectModalImg" src="" alt="Project view">
+                </div>
+                <div class="project-modal-info">
+                    <div class="project-modal-tags" id="projectModalTags"></div>
+                    <h3 id="projectModalTitle"></h3>
+                    <p id="projectModalDesc"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/modern-portfolio.js"></script>
+    <script>
+        // Generate 15 glowing bubbles per section with random properties (REDUCED from 80 for performance)
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = ['hero', 'about', 'projects', 'skills', 'certificates', 'videos', 'contact'];
+            const colors = [
+                'rgba(99, 102, 241, ',   // Purple
+                'rgba(6, 182, 212, ',    // Cyan
+                'rgba(236, 72, 153, ',   // Pink
+                'rgba(34, 197, 94, ',    // Green
+                'rgba(168, 85, 247, ',   // Violet
+                'rgba(251, 191, 36, ',   // Amber
+                'rgba(244, 63, 94, '     // Rose
+            ];
+            
+            sections.forEach(function(section) {
+                const bubblesContainer = document.querySelector('.' + section + ' .section-bubbles');
+                if (!bubblesContainer) return;
+                
+                // Count existing bubbles
+                const existingCount = bubblesContainer.querySelectorAll('.section-bubble').length;
+                const needed = 15 - existingCount; // REDUCED from 80 to 15
+                
+                // Add remaining bubbles to reach 15
+                for (let i = 0; i < needed; i++) {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'section-bubble';
+                    
+                    // Random properties with more variation
+                    const size = Math.floor(Math.random() * 20) + 3; // 3-22px
+                    const left = Math.floor(Math.random() * 98) + 1; // 1-99%
+                    const top = Math.floor(Math.random() * 95) + 2; // 2-97%
+                    const duration = Math.floor(Math.random() * 10) + 6; // 6-16s
+                    const delay = (Math.random() * 6).toFixed(1); // 0-6s
+                    const colorBase = colors[Math.floor(Math.random() * colors.length)];
+                    const opacity = (Math.random() * 0.4 + 0.3).toFixed(2); // 0.3-0.7
+                    
+                    // Apply styles with enhanced glow
+                    bubble.style.cssText = `
+                        width: ${size}px;
+                        height: ${size}px;
+                        background: ${colorBase}${opacity});
+                        left: ${left}%;
+                        top: ${top}%;
+                        animation-duration: ${duration}s;
+                        animation-delay: ${delay}s;
+                        color: ${colorBase}0.9);
+                        box-shadow: 0 0 ${size}px ${colorBase}0.8), 0 0 ${size * 2}px ${colorBase}0.6), 0 0 ${size * 3}px ${colorBase}0.4), 0 0 ${size * 4}px ${colorBase}0.2);
+                    `;
+                    
+                    bubblesContainer.appendChild(bubble);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
